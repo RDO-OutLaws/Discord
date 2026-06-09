@@ -1,65 +1,61 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+// Menu button functionality
+document.querySelector('.menu-button').addEventListener('click', function() {
+    alert('Menu coming soon!');
+});
+
+// Sign in button functionality
+document.querySelector('.signin-button').addEventListener('click', function() {
+    alert('Sign in page coming soon!');
+});
+
+// CTA Buttons
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const text = this.textContent.trim();
+        if (text.includes('Join the Community')) {
+            alert('Redirecting to community page...');
+        } else if (text.includes('Learn more')) {
+            alert('Redirecting to community info...');
+        } else if (text.includes('Join The Team')) {
+            alert('Redirecting to team application...');
         }
     });
 });
 
-// Contact form handling
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        
-        // Get form values
-        const name = this.querySelector('input[type="text"]').value;
-        const email = this.querySelector('input[type="email"]').value;
-        const message = this.querySelector('textarea').value;
-        
-        // Simple validation
-        if (name.trim() && email.trim() && message.trim()) {
-            alert(`Thank you for your message, ${name}! We will get back to you soon.`);
-            this.reset();
-        } else {
-            alert('Please fill out all fields.');
-        }
-    });
-}
-
-// CTA Button functionality
-const ctaButtons = document.querySelectorAll('.cta-button');
-ctaButtons.forEach(button => {
-    button.addEventListener('click', function () {
-        if (this.textContent === 'Get Started') {
-            // Scroll to contact section
-            document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
-        }
-    });
+// Feedback button
+document.querySelector('.feedback-btn').addEventListener('click', function() {
+    alert('Thank you for your interest! Feedback form coming soon.');
 });
 
-// Add active class to nav links on scroll
-window.addEventListener('scroll', () => {
-    let current = '';
-    
-    document.querySelectorAll('section').forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - 200) {
-            current = section.getAttribute('id');
+// Add smooth scroll behavior
+document.documentElement.style.scrollBehavior = 'smooth';
+
+// Navbar shadow on scroll
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+    } else {
+        navbar.style.boxShadow = 'none';
+    }
+});
+
+// Animate elements on scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+            observer.unobserve(entry.target);
         }
     });
-    
-    document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
+}, observerOptions);
+
+// Observe all buttons and content elements
+document.querySelectorAll('.btn, .breadcrumb').forEach(el => {
+    observer.observe(el);
 });
